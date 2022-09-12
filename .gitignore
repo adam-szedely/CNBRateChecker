@@ -1,0 +1,8 @@
+.DS_store
+obj
+bin
+.vs
+**/bin/
+**/obj/
+**/.vs/
+**/Migrations/
