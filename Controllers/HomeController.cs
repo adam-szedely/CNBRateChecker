@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SmartyHomework.Controllers
 {
+    [Route("rates")]
     public class HomeController : Controller
     {
-        // GET: /<controller>/
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View();
