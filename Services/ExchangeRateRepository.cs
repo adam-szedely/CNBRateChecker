@@ -9,15 +9,34 @@ namespace SmartyHomework.Services
 		{
 			var validCountries = new Dictionary<int, string>
 			{
-				{ 1, "Island" },
-				{ 2, "Island" },
-				{ 3, "Whatever" },
-			};
+				{ 1, "Bulharsko" },
+				{ 2, "Dánsko" },
+				{ 3, "EMU" },
+                { 4, "Chorvatsko" },
+                { 5, "Island" },
+                { 6, "Maďarsko" },
+                { 7, "Norsko" },
+                { 8, "Polsko" },
+                { 9, "Rumunsko" },
+                { 10, "Švédsko" },
+                { 11, "Švýcarsko" },
+                { 12, "Turecko" },
+                { 13, "Velká Británie" }
+            };
 		}
 
         public bool CreateTheFile(string dateName)
         {
 			File.Create(@"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data");
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNonEu()
+        {
+            //deserialize - split by '|
+            //remove non EU
+            //save
+            //serialize
             throw new NotImplementedException();
         }
 
