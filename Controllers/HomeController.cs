@@ -9,7 +9,7 @@ using SmartyHomework.Services;
 
 namespace SmartyHomework.Controllers
 {
-    [Route("rates")]
+    [Route("")]
     public class HomeController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -22,9 +22,22 @@ namespace SmartyHomework.Controllers
             _exchangeRateRepository = exchangeRateRepository;
         }
 
-        [HttpGet("")]
-        public IActionResult Index()
+        [HttpGet("rates")]
+        public async Task<IActionResult> IndexAsync()
         {
+            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/testFile2.txt";
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync(@"https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt;jsessionid=C11E415FEF14B416D2FAE6333AD69E5D?date=3.09.2022");
+
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            {
+                var fileInfo = new FileInfo("myPackage.txt");
+                using (var fileStream = fileInfo.OpenWrite())
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+            }
             return View();
         }
 

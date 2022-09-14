@@ -27,7 +27,7 @@ namespace SmartyHomework.Services
 
         public bool CreateTheFile(string dateName)
         {
-			File.Create(@"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data");
+			File.Create(@"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data" + GenerateFileName + ".json");
             throw new NotImplementedException();
         }
 
@@ -43,6 +43,16 @@ namespace SmartyHomework.Services
         public string GenerateFileName(DateOnly date)
         {
 			return date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+        }
+
+        public void ReadTheFile(string fileLocation)
+        {
+            var tempFile = Path.GetTempFileName();
+            var linesToKeep = File.ReadLines(fileLocation).Where(l => l != "removeme");
+
+            File.WriteAllLines(tempFile, linesToKeep);
+            File.Delete(fileLocation);
+            File.Move(tempFile, fileLocation);
         }
     }
 }

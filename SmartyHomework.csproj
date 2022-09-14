@@ -19,8 +19,6 @@
     <None Remove="Services\Interfaces\" />
     <None Remove="Microsoft.Extensions.Http" />
     <None Remove="Polly.Extensions.Http" />
-    <None Remove="Views\" />
-    <None Remove="Views\Home\" />
     <None Remove="Syncfusion.Blazor" />
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +37,5 @@
     <Folder Include="Services\" />
     <Folder Include="Models\" />
     <Folder Include="Services\Interfaces\" />
-    <Folder Include="Views\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
 </Project>
