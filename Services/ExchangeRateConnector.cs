@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Net;
+using Flurl;
+using Flurl.Http;
+using Polly;
+using Polly.Retry;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
@@ -13,41 +17,53 @@ namespace SmartyHomework.Services
         public ExchangeRateConnector(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data";
         }
 
-        public ExchangeRateConnector()
+        private AsyncRetryPolicy BuildRetryPolicy()
         {
+            var retryPolicy = Policy
+               .Handle<FlurlHttpException>(IsTransientError)
+               .WaitAndRetryAsync(3, retryAttempt =>
+               {
+                   var nextAttemptIn = TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+                   Console.WriteLine($"Retry attempt {retryAttempt} to make request. Next try on {nextAttemptIn.TotalSeconds} seconds.");
+                   return nextAttemptIn;
+               });
+            return retryPolicy;
         }
 
-        public string GenerateUri(string date)
+        private bool IsTransientError(FlurlHttpException exception)
         {
-            return @"https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt?date=" + GenerateDate; //10.09.2022
-        }
-
-        public async void DownloadTheFile(string uri, string outputPath)
-        {
-            var client = _httpClientFactory.CreateClient();  //add retries etc
-            var response = await client.GetAsync(uri);
-            using (var stream = await response.Content.ReadAsStreamAsync())
+            int[] httpStatusCodesWorthRetrying =
             {
-                var fileInfo = new FileInfo("myPackage.txt");
-                using (var fileStream = fileInfo.OpenWrite())
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-            }
-            //if (!Uri.TryCreate(uri, UriKind.Absolute, out uriResult))
-            //    throw new InvalidOperationException("URI is invalid.");
+                 (int)HttpStatusCode.RequestTimeout, // 408
+                 (int)HttpStatusCode.BadGateway, // 502
+                 (int)HttpStatusCode.ServiceUnavailable, // 503
+                 (int)HttpStatusCode.GatewayTimeout // 504
+             };
+            return exception.StatusCode.HasValue && httpStatusCodesWorthRetrying.Contains(exception.StatusCode.Value);
+        } 
 
-            //if (!File.Exists(outputPath))
-            //    throw new FileNotFoundException("File not found."
-            //       , nameof(outputPath));      
+        public string GenerateUri(DateOnly date)
+        {
+            var url = "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt"
+                    .SetQueryParams(new
+                    {
+                        jsessiond = "C11E415FEF14B416D2FAE6333AD69E5D",
+                        date = date.ToString()
+                    });
+            return url;
+
+            //flurl create url
+            //append +1 day
+            //while day je vetsi nez prvni den ale zaroven mensi nez posledni
         }
 
-        public string GenerateDate(DateOnly date)
+        public async void DownloadTxtWithFlurl(string uri, string outputPath)
         {
-            return date.ToString("dd/mm/yyyy", CultureInfo.InvariantCulture);
+            var policy = BuildRetryPolicy();
+            var path =  await policy.ExecuteAsync(() => uri
+            .DownloadFileAsync(outputPath, "testFlurl.txt"));
         }
     }
 }

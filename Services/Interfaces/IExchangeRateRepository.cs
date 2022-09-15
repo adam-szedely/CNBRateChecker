@@ -6,7 +6,7 @@ namespace SmartyHomework.Services
         public void ReadTheFile(string fileLocation);
         public void RemoveNonEu();
         public string GenerateFileName(DateOnly date);
-        public bool CreateTheFile(string dateName);
+        public void CreateTheFile(string dateName);
         //1. Receive data
         //2. REMOVE non-european countries (have list of EU countries, deserialize or get it directly from ČNB?)
         //3. Create the file with appropriate name yyyy.MM.dd.json
@@ -14,7 +14,6 @@ namespace SmartyHomework.Services
 }
 
 //- IExchangeRateRepository (jeho role je uložení dat směnných kurzů)
-//  1
 
 
 
