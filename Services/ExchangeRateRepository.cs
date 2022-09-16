@@ -39,10 +39,10 @@ namespace SmartyHomework.Services
             }.Values.ToHashSet();
             try
             {
-                var targetLocation = @"/Users/adamszedely/Projects/GFExam/";
+                var targetLocation = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
                 var name = File.ReadAllLines(path).First();
                 var lines = File.ReadAllLines(path).Skip(2);
-                var model = lines.Select(p => new Rates
+                var model =  lines.Select(p => new Rates
                 {
                     Country = p.Split("|")[0],
                     Currency = p.Split("|")[1],
@@ -52,10 +52,9 @@ namespace SmartyHomework.Services
                 });
 
                 List<Rates> lístky = model.Where(model => validCountries.Contains(model.Country)).ToList();
-
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
 
-                System.IO.File.WriteAllText(targetLocation + name, jsonString);
+                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length-4), jsonString);
             }
             catch (FileNotFoundException)
             {

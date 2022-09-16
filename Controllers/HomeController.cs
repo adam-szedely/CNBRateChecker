@@ -25,9 +25,20 @@ namespace SmartyHomework.Controllers
         [HttpGet("download")]
         public async Task<IActionResult> Download()
         {
+
+            //1. Download stuff
+            //2. Filter through and save the file
+            //3. Repeate until
+
+            //Another process je DownloadFlurl ne remove Eu
             var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data";
-            _exchangeRateConnector.DownloadTxtWithFlurl("https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt;jsessionid=097D328391FCC9ADD31FAB5B551E8C70?date=14.09.2022", outputPath);
-            _exchangeRateRepository.RemoveNonEu(outputPath);
+            var startDate = new DateOnly(2022, 7, 1);
+            //while (startDate < startDate.AddDays(3))
+            //{
+            //.DownloadTxtWithFlurl(_exchangeRateConnector.GenerateUri(startDate), outputPath);
+            _exchangeRateRepository.RemoveNonEu(outputPath + "/CurrencyRate.txt");
+            //    startDate.AddDays(1);
+            //}
             return View();
         }
     }

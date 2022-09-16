@@ -68,7 +68,7 @@ namespace SmartyHomework.Services
         {
             var policy = BuildRetryPolicy();
             var path =  await policy.ExecuteAsync(() => uri
-            .DownloadFileAsync(outputPath, "CurrencyRate.txt")); //maybe save into memory somehow? or always overwrite?          
+            .DownloadFileAsync(outputPath, "CurrencyRate.txt")); //Always overwrite currency rate.txt - only need one file      
         }
     }
 }
