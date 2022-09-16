@@ -27,6 +27,7 @@ namespace SmartyHomework.Controllers
         {
             var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data";
             _exchangeRateConnector.DownloadTxtWithFlurl("https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt;jsessionid=097D328391FCC9ADD31FAB5B551E8C70?date=14.09.2022", outputPath);
+            _exchangeRateRepository.RemoveNonEu(outputPath);
             return View();
         }
     }

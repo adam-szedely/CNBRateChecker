@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SmartyHomework.Models;
 using Syncfusion.Blazor.RichTextEditor.Internal;
 
@@ -11,6 +12,12 @@ namespace SmartyHomework.Services
 		public ExchangeRateRepository()
 		{
 		}
+
+        public List<Rates> GetRates(string path)
+        {
+                var jsonString = File.ReadAllText(path);
+                return (List<Rates>)Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString, typeof(List<Rates>));
+        }
 
         public void RemoveNonEu(string path)
         {
@@ -29,7 +36,7 @@ namespace SmartyHomework.Services
                 { 11, "Švýcarsko" },
                 { 12, "Turecko" },
                 { 13, "Velká Británie" }
-            };
+            }.Values.ToHashSet();
             try
             {
                 var targetLocation = @"/Users/adamszedely/Projects/GFExam/";
@@ -43,15 +50,11 @@ namespace SmartyHomework.Services
                     Code = p.Split("|")[3],
                     Rate = p.Split("|")[4],
                 });
-                List<Rates> lístky = new List<Rates>();
-                foreach (var item in model)
-                {
-                    if (validCountries.Values.Contains(item.Country))
-                    {
-                        lístky.Add(item);
-                    }
-                }
+
+                List<Rates> lístky = model.Where(model => validCountries.Contains(model.Country)).ToList();
+
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
+
                 System.IO.File.WriteAllText(targetLocation + name, jsonString);
             }
             catch (FileNotFoundException)

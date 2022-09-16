@@ -1,34 +1,93 @@
-14.09.2022 #179
-země|měna|množství|kód|kurz
-Austrálie|dolar|1|AUD|16,490
-Brazílie|real|1|BRL|4,731
-Bulharsko|lev|1|BGN|12,510
-Čína|žen-min-pi|1|CNY|3,526
-Dánsko|koruna|1|DKK|3,298
-EMU|euro|1|EUR|24,525
-Filipíny|peso|100|PHP|42,973
-Hongkong|dolar|1|HKD|3,127
-Chorvatsko|kuna|1|HRK|3,261
-Indie|rupie|100|INR|30,868
-Indonesie|rupie|1000|IDR|1,646
-Island|koruna|100|ISK|17,555
-Izrael|nový šekel|1|ILS|7,140
-Japonsko|jen|100|JPY|17,140
-Jižní Afrika|rand|1|ZAR|1,407
-Kanada|dolar|1|CAD|18,606
-Korejská republika|won|100|KRW|1,761
-Maďarsko|forint|100|HUF|6,088
-Malajsie|ringgit|1|MYR|5,421
-Mexiko|peso|1|MXN|1,224
-MMF|ZPČ|1|XDR|32,071
-Norsko|koruna|1|NOK|2,425
-Nový Zéland|dolar|1|NZD|14,707
-Polsko|zlotý|1|PLN|5,200
-Rumunsko|leu|1|RON|4,975
-Singapur|dolar|1|SGD|17,465
-Švédsko|koruna|1|SEK|2,298
-Švýcarsko|frank|1|CHF|25,517
-Thajsko|baht|100|THB|66,975
-Turecko|lira|1|TRY|1,344
-USA|dolar|1|USD|24,542
-Velká Británie|libra|1|GBP|28,351
+[
+  {
+    "Country": "Bulharsko",
+    "Currency": "lev",
+    "Amount": "1",
+    "Code": "BGN",
+    "Rate": "12,510"
+  },
+  {
+    "Country": "Dánsko",
+    "Currency": "koruna",
+    "Amount": "1",
+    "Code": "DKK",
+    "Rate": "3,298"
+  },
+  {
+    "Country": "EMU",
+    "Currency": "euro",
+    "Amount": "1",
+    "Code": "EUR",
+    "Rate": "24,525"
+  },
+  {
+    "Country": "Chorvatsko",
+    "Currency": "kuna",
+    "Amount": "1",
+    "Code": "HRK",
+    "Rate": "3,261"
+  },
+  {
+    "Country": "Island",
+    "Currency": "koruna",
+    "Amount": "100",
+    "Code": "ISK",
+    "Rate": "17,555"
+  },
+  {
+    "Country": "Maďarsko",
+    "Currency": "forint",
+    "Amount": "100",
+    "Code": "HUF",
+    "Rate": "6,088"
+  },
+  {
+    "Country": "Norsko",
+    "Currency": "koruna",
+    "Amount": "1",
+    "Code": "NOK",
+    "Rate": "2,425"
+  },
+  {
+    "Country": "Polsko",
+    "Currency": "zlotý",
+    "Amount": "1",
+    "Code": "PLN",
+    "Rate": "5,200"
+  },
+  {
+    "Country": "Rumunsko",
+    "Currency": "leu",
+    "Amount": "1",
+    "Code": "RON",
+    "Rate": "4,975"
+  },
+  {
+    "Country": "Švédsko",
+    "Currency": "koruna",
+    "Amount": "1",
+    "Code": "SEK",
+    "Rate": "2,298"
+  },
+  {
+    "Country": "Švýcarsko",
+    "Currency": "frank",
+    "Amount": "1",
+    "Code": "CHF",
+    "Rate": "25,517"
+  },
+  {
+    "Country": "Turecko",
+    "Currency": "lira",
+    "Amount": "1",
+    "Code": "TRY",
+    "Rate": "1,344"
+  },
+  {
+    "Country": "Velká Británie",
+    "Currency": "libra",
+    "Amount": "1",
+    "Code": "GBP",
+    "Rate": "28,351"
+  }
+]
