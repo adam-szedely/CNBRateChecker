@@ -30,15 +30,17 @@ namespace SmartyHomework.Controllers
             //2. Filter through and save the file
             //3. Repeate until
 
-            //Another process je DownloadFlurl ne remove Eu
-            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data";
-            var startDate = new DateOnly(2022, 7, 1);
-            //while (startDate < startDate.AddDays(3))
-            //{
-            //.DownloadTxtWithFlurl(_exchangeRateConnector.GenerateUri(startDate), outputPath);
-            _exchangeRateRepository.RemoveNonEu(outputPath + "/CurrencyRate.txt");
-            //    startDate.AddDays(1);
-            //}
+            var FileNameTracker = 1;
+            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
+            DateTime begindate = Convert.ToDateTime("01/08/2022");
+            DateTime enddate = Convert.ToDateTime("04/08/2022");
+            while (begindate < enddate)
+            {
+                _exchangeRateConnector.DownloadTxtWithFlurl(_exchangeRateConnector.GenerateUri(begindate), outputPath, FileNameTracker);
+               //_exchangeRateRepository.RemoveNonEu(outputPath + "CurrencyRate" + FileNameTracker + ".txt");
+                begindate = begindate.AddDays(1);
+                FileNameTracker++;
+            }
             return View();
         }
     }

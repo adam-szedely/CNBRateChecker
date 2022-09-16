@@ -44,31 +44,25 @@ namespace SmartyHomework.Services
             return exception.StatusCode.HasValue && httpStatusCodesWorthRetrying.Contains(exception.StatusCode.Value);
         }
 
-        public string DateGenerator(DateOnly date)
-        {
-            return date.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
-        }
-
-        public string GenerateUri(DateOnly date)
+        public string GenerateUri(DateTime date)
         {
             var url = "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt"
                     .SetQueryParams(new
                     {
                         jsessiond = "C11E415FEF14B416D2FAE6333AD69E5D",
-                        date = date.ToString()
+                        date = date.ToString("dd/MM/yyyy")
                     });
             return url;
-
-            //flurl create url
-            //append +1 day
-            //while day je vetsi nez prvni den ale zaroven mensi nez posledni
         }
 
-        public async void DownloadTxtWithFlurl(string uri, string outputPath)
+        public async void DownloadTxtWithFlurl(string uri, string outputPath, int number)
         {
+            var a = @"/CurrencyRate" + number + ".txt";
             var policy = BuildRetryPolicy();
-            var path =  await policy.ExecuteAsync(() => uri
-            .DownloadFileAsync(outputPath, "CurrencyRate.txt")); //Always overwrite currency rate.txt - only need one file      
+            var path = await policy.ExecuteAsync(() => uri
+            .DownloadFileAsync(outputPath, @"CurrencyRate" + number + ".txt"));
+            
+            //Always overwrite currency rate.txt - only need one file
         }
     }
 }
