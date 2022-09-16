@@ -37,7 +37,7 @@ namespace SmartyHomework.Controllers
             while (begindate < enddate)
             {
                 _exchangeRateConnector.DownloadTxtWithFlurl(_exchangeRateConnector.GenerateUri(begindate), outputPath, FileNameTracker);
-               //_exchangeRateRepository.RemoveNonEu(outputPath + "CurrencyRate" + FileNameTracker + ".txt");
+                _exchangeRateRepository.RemoveNonEu(outputPath + "CurrencyRate" + FileNameTracker + ".txt");
                 begindate = begindate.AddDays(1);
                 FileNameTracker++;
             }

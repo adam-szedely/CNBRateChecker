@@ -53,7 +53,7 @@ namespace SmartyHomework.Services
 
                 List<Rates> lístky = model.Where(model => validCountries.Contains(model.Country)).ToList();
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
-                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length-4), jsonString);
+                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length - 4) + ".json", jsonString) ;
             }
             catch (FileNotFoundException)
             {
