@@ -42,7 +42,12 @@ namespace SmartyHomework.Services
                  (int)HttpStatusCode.GatewayTimeout // 504
              };
             return exception.StatusCode.HasValue && httpStatusCodesWorthRetrying.Contains(exception.StatusCode.Value);
-        } 
+        }
+
+        public string DateGenerator(DateOnly date)
+        {
+            return date.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+        }
 
         public string GenerateUri(DateOnly date)
         {

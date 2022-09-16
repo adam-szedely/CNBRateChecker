@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using Newtonsoft.Json;
+using SmartyHomework.Models;
 using Syncfusion.Blazor.RichTextEditor.Internal;
 
 namespace SmartyHomework.Services
@@ -10,52 +12,9 @@ namespace SmartyHomework.Services
 		{
 		}
 
-        public void CreateTheFile(string dateName)
+        public void RemoveNonEu(string path)
         {
-			File.Create(@"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data" + GenerateFileName + ".json");
-        }
-
-        public void RemoveNonEu()
-        {
-            //deserialize - split by '|
-            //remove non EU
-            //save
-            //serialize
-            throw new NotImplementedException();
-        }
-
-        public string GenerateFileName(DateOnly date)
-        {
-			return date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-        }
-
-        public void DeleteTheLines(string fileLocation)
-        {
-
-            using (StreamReader reader = new StreamReader("C:\\input"))
-            {
-                string line = null;
-                int line_number = 0;
-                int line_to_delete = 12;
-
-                using (StreamWriter writer = new StreamWriter("C:\\output"))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        line_number++;
-
-                        if (line_number == line_to_delete)
-                            continue;
-
-                        writer.WriteLine(line);
-                    }
-                }
-            }
-        }
-
-        public void ReadTheFile(string fileLocation)
-        {
-            var validCountries = new Dictionary<int, string>
+            var validCountries = new Dictionary<int, string> //should this be elsewhere?
             {
                 { 1, "Bulharsko" },
                 { 2, "Dánsko" },
@@ -71,17 +30,33 @@ namespace SmartyHomework.Services
                 { 12, "Turecko" },
                 { 13, "Velká Británie" }
             };
-
-            var tempFile = Path.GetTempFileName();
-            var linesToKeep = File.ReadLines(fileLocation).Where(l => l != "removeme");
-
-            var data = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/testFlurl.json";
-            foreach (var line in data)
+            try
             {
-                var currentLine = line.ToString().Split('|').ToList();
-                if (validCountries.ContainsValue(currentLine[0]))
+                var targetLocation = @"/Users/adamszedely/Projects/GFExam/";
+                var name = File.ReadAllLines(path).First();
+                var lines = File.ReadAllLines(path).Skip(2);
+                var model = lines.Select(p => new Rates
                 {
+                    Country = p.Split("|")[0],
+                    Currency = p.Split("|")[1],
+                    Amount = p.Split("|")[2],
+                    Code = p.Split("|")[3],
+                    Rate = p.Split("|")[4],
+                });
+                List<Rates> lístky = new List<Rates>();
+                foreach (var item in model)
+                {
+                    if (validCountries.Values.Contains(item.Country))
+                    {
+                        lístky.Add(item);
+                    }
                 }
+                var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
+                System.IO.File.WriteAllText(targetLocation + name, jsonString);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine(@"Unable to read file:" + path.ToString());
             }
         }
     }
