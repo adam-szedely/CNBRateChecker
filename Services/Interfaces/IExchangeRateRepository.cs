@@ -6,7 +6,7 @@ namespace SmartyHomework.Services
 {
 	public interface IExchangeRateRepository
 	{
-        public void RemoveNonEu(string path);
+        public void SaveEuRates(string path);
         public List<Rates> GetRates(string path);
     }
 }

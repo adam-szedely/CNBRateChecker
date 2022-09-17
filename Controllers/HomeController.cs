@@ -24,16 +24,13 @@ namespace SmartyHomework.Controllers
         [HttpGet("download")]
         public async Task<IActionResult> Download()
         {
-            //1. Download stuff
-            //2. Filter through and save the file
-            //3. Repeate until
-
             var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
 
             DateTime begindate = Convert.ToDateTime("01/07/2022");
-            DateTime enddate = Convert.ToDateTime("1/09/2022");
+            DateTime enddate = Convert.ToDateTime("4/07/2022");
 
             var countOfFiles = 1;
+            var d = begindate.Day;
 
             while (begindate < enddate)
             {
@@ -56,12 +53,12 @@ namespace SmartyHomework.Controllers
         public async Task<IActionResult> Edit()
         {
             var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
-            var fileCount = (from file in Directory.EnumerateFiles(outputPath, "*.txt", SearchOption.AllDirectories)
+            var fileCount = (from file in Directory.EnumerateFiles(outputPath, "*.txt", SearchOption.TopDirectoryOnly)
                              select file).Count();
 
             for (int i = 1; i <= fileCount; i++)
             {
-                _exchangeRateRepository.RemoveNonEu(outputPath + "CurrencyRate" + i + ".txt");
+                _exchangeRateRepository.SaveEuRates(outputPath + "CurrencyRate" + i + ".txt");
             }
 
             return Ok();

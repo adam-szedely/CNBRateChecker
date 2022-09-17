@@ -19,7 +19,7 @@ namespace SmartyHomework.Services
                 return (List<Rates>)Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString, typeof(List<Rates>));
         }
 
-        public void RemoveNonEu(string path)
+        private bool IsTheCountryInTheEu(string country)
         {
             var validCountries = new Dictionary<int, string> //should this be elsewhere?
             {
@@ -37,6 +37,11 @@ namespace SmartyHomework.Services
                 { 12, "Turecko" },
                 { 13, "Velká Británie" }
             }.Values.ToHashSet();
+            return validCountries.Contains(country);
+        }
+
+        public void SaveEuRates(string path)
+        {
             try
             {
                 var targetLocation = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
@@ -50,8 +55,7 @@ namespace SmartyHomework.Services
                     Code = p.Split("|")[3],
                     Rate = p.Split("|")[4],
                 });
-
-                List<Rates> lístky = model.Where(model => validCountries.Contains(model.Country)).ToList();
+                List<Rates> lístky = model.Where(model => IsTheCountryInTheEu(model.Country)).ToList();
 
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
 
