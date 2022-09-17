@@ -55,7 +55,7 @@ namespace SmartyHomework.Services
 
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
 
-                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length - 4) + ".json", jsonString);
+                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length - 5) + ".json", jsonString);
 
                 System.IO.File.Delete(path);
             }
