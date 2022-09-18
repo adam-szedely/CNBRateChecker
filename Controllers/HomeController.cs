@@ -22,26 +22,22 @@ namespace SmartyHomework.Controllers
         }
 
         [HttpGet("download")]
-        public async Task<IActionResult> Download()
+        public async Task<IActionResult> Download() //Date can come as parameter from the user as can the output path
         {
+            var fileCounter = 1;
             var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
-
             DateTime begindate = Convert.ToDateTime("01/07/2022");
-            DateTime enddate = Convert.ToDateTime("4/07/2022");
-
-            var countOfFiles = 1;
-            var d = begindate.Day;
-
+            DateTime enddate = Convert.ToDateTime("5/07/2022");
+            
             while (begindate < enddate)
             {
                 if (begindate.DayOfWeek == DayOfWeek.Saturday)
                 {
                     begindate = begindate.AddDays(2);
                 }
-                _exchangeRateConnector.DownloadTxtWithFlurl(_exchangeRateConnector.GenerateUri(begindate), outputPath, countOfFiles);
-
+                _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), outputPath, fileCounter);
                 begindate = begindate.AddDays(1);
-                countOfFiles++;
+                fileCounter++;
             }
 
             return Ok();
@@ -58,7 +54,7 @@ namespace SmartyHomework.Controllers
 
             for (int i = 1; i <= fileCount; i++)
             {
-                _exchangeRateRepository.SaveEuRates(outputPath + "CurrencyRate" + i + ".txt");
+                _exchangeRateRepository.FilterOutInvalidRates(outputPath + "CurrencyRate" + i + ".txt");
             }
 
             return Ok();

@@ -12,10 +12,6 @@ namespace SmartyHomework.Services
 {
     public class ExchangeRateConnector : IExchangeRateConnector
     {
-        public ExchangeRateConnector()
-        {
-        }
-
         private AsyncRetryPolicy BuildRetryPolicy()
         {
             var retryPolicy = Policy
@@ -41,7 +37,7 @@ namespace SmartyHomework.Services
             return exception.StatusCode.HasValue && httpStatusCodesWorthRetrying.Contains(exception.StatusCode.Value);
         }
 
-        public string GenerateUri(DateTime date)
+        public string GenerateRatesUrl(DateTime date)
         {
             var url = "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt"
                     .SetQueryParams(new
@@ -51,7 +47,7 @@ namespace SmartyHomework.Services
             return url;
         }
 
-        public async void DownloadTxtWithFlurl(string uri, string outputPath, int number)
+        public async void DownloadRatesTxtFile(string uri, string outputPath, int number)
         {
             var policy = BuildRetryPolicy();
             var path = await policy.ExecuteAsync(() => uri

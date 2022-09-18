@@ -9,17 +9,13 @@ namespace SmartyHomework.Services
 {
 	public class ExchangeRateRepository : IExchangeRateRepository
 	{
-		public ExchangeRateRepository()
-		{
-		}
-
         public List<Rates> GetRates(string path)
         {
                 var jsonString = File.ReadAllText(path);
                 return (List<Rates>)Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString, typeof(List<Rates>));
         }
 
-        private bool IsTheCountryInTheEu(string country)
+        private bool IsTheCountryValid(string country)
         {
             var validCountries = new Dictionary<int, string> //should this be elsewhere?
             {
@@ -40,7 +36,7 @@ namespace SmartyHomework.Services
             return validCountries.Contains(country);
         }
 
-        public void SaveEuRates(string path)
+        public void FilterOutInvalidRates(string path)
         {
             try
             {
@@ -54,8 +50,10 @@ namespace SmartyHomework.Services
                     Amount = p.Split("|")[2],
                     Code = p.Split("|")[3],
                     Rate = p.Split("|")[4],
-                });
-                List<Rates> lístky = model.Where(model => IsTheCountryInTheEu(model.Country)).ToList();
+                }
+                );
+
+                List<Rates> lístky = model.Where(model => IsTheCountryValid(model.Country)).ToList();
 
                 var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
 
