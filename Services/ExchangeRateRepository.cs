@@ -17,7 +17,7 @@ namespace SmartyHomework.Services
 
         private bool IsTheCountryValid(string country)
         {
-            var validCountries = new Dictionary<int, string> //should this be elsewhere?
+            var validCountries = new Dictionary<int, string>
             {
                 { 1, "Bulharsko" },
                 { 2, "Dánsko" },
@@ -36,14 +36,12 @@ namespace SmartyHomework.Services
             return validCountries.Contains(country);
         }
 
-        public void FilterOutInvalidRates(string path)
+        public void FilterOutInvalidRates(string path, string name)
         {
             try
             {
                 var targetLocation = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
-                var name = File.ReadAllLines(path).First();
-                var lines = File.ReadAllLines(path).Skip(2);
-                var model =  lines.Select(p => new Rates
+                var model = File.ReadAllLines(path).Skip(2).Select(p => new Rates
                 {
                     Country = p.Split("|")[0],
                     Currency = p.Split("|")[1],
@@ -53,11 +51,11 @@ namespace SmartyHomework.Services
                 }
                 );
 
-                List<Rates> lístky = model.Where(model => IsTheCountryValid(model.Country)).ToList();
+                List<Rates> rates = model.Where(model => IsTheCountryValid(model.Country)).ToList();
 
-                var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(lístky.ToArray(), Formatting.Indented);
+                var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(rates.ToArray(), Formatting.Indented);
 
-                System.IO.File.WriteAllText(targetLocation + name.Substring(0, name.Length - 5) + ".json", jsonString);
+                System.IO.File.WriteAllText(targetLocation + name + ".json", jsonString);
 
                 System.IO.File.Delete(path);
             }

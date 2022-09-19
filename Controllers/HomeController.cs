@@ -22,41 +22,24 @@ namespace SmartyHomework.Controllers
         }
 
         [HttpGet("download")]
-        public async Task<IActionResult> Download() //Date can come as parameter from the user as can the output path
+        public async Task<IActionResult> Download()
         {
             var fileCounter = 1;
-            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
-            DateTime begindate = Convert.ToDateTime("01/07/2022");
-            DateTime enddate = Convert.ToDateTime("5/07/2022");
-            
+            var path = AppDomain.CurrentDomain.BaseDirectory + @"Data/";
+            DateTime begindate = Convert.ToDateTime("08/08/2022");
+            DateTime enddate = Convert.ToDateTime("29/08/2022");
+
             while (begindate < enddate)
             {
                 if (begindate.DayOfWeek == DayOfWeek.Saturday)
                 {
                     begindate = begindate.AddDays(2);
                 }
-                _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), outputPath, fileCounter);
+                _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), path, fileCounter);
+                _exchangeRateRepository.FilterOutInvalidRates(path + "CurrencyRate" + fileCounter + ".txt", begindate.ToString("yyyy/MM/dd"));
                 begindate = begindate.AddDays(1);
                 fileCounter++;
             }
-
-            return Ok();
-
-            //THEY'RE NOT SAVED THERE YET UNTIL DOWNLOAD FINISHES - need to create redirect or new action or sth
-        }
-
-        [HttpGet("edit")]
-        public async Task<IActionResult> Edit()
-        {
-            var outputPath = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
-            var fileCount = (from file in Directory.EnumerateFiles(outputPath, "*.txt", SearchOption.TopDirectoryOnly)
-                             select file).Count();
-
-            for (int i = 1; i <= fileCount; i++)
-            {
-                _exchangeRateRepository.FilterOutInvalidRates(outputPath + "CurrencyRate" + i + ".txt");
-            }
-
             return Ok();
         }
     }

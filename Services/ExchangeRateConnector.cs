@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
+using System.IO.Pipes;
 using System.Net;
 using Flurl;
 using Flurl.Http;
@@ -52,7 +54,6 @@ namespace SmartyHomework.Services
             var policy = BuildRetryPolicy();
             var path = await policy.ExecuteAsync(() => uri
             .DownloadFileAsync(outputPath, @"CurrencyRate" + number + ".txt"));
-            //Always overwrite currency rate.txt - only need one file
         }
     }
 }
