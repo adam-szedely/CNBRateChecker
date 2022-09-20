@@ -24,21 +24,18 @@ namespace SmartyHomework.Controllers
         [HttpGet("download")]
         public async Task<IActionResult> Download()
         {
-            var fileCounter = 1;
             var path = AppDomain.CurrentDomain.BaseDirectory + @"Data/";
-            DateTime begindate = Convert.ToDateTime("08/08/2022");
-            DateTime enddate = Convert.ToDateTime("29/08/2022");
-
+            DateTime begindate = Convert.ToDateTime("01/07/2022");
+            DateTime enddate = Convert.ToDateTime("02/08/2022");
             while (begindate < enddate)
             {
                 if (begindate.DayOfWeek == DayOfWeek.Saturday)
                 {
                     begindate = begindate.AddDays(2);
                 }
-                _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), path, fileCounter);
-                _exchangeRateRepository.FilterOutInvalidRates(path + "CurrencyRate" + fileCounter + ".txt", begindate.ToString("yyyy/MM/dd"));
+                _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), path, begindate.Day);
+                _exchangeRateRepository.FilterOutInvalidRates(path + "CurrencyRate" + begindate.Day + ".txt", begindate.ToString("yyyy/MM/dd"));
                 begindate = begindate.AddDays(1);
-                fileCounter++;
             }
             return Ok();
         }
