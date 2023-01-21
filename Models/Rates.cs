@@ -9,6 +9,5 @@ namespace SmartyHomework.Models
         public string Code { get; set; }
         public string Rate { get; set; }
 	}
-
 }
 

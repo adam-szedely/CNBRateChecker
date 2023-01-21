@@ -9,13 +9,14 @@ namespace SmartyHomework.Services
 {
 	public class ExchangeRateRepository : IExchangeRateRepository
 	{
+
         public List<Rates> GetRates(string path)
         {
                 var jsonString = File.ReadAllText(path);
                 return (List<Rates>)Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString, typeof(List<Rates>));
         }
 
-        private bool IsTheCountryValid(string country)
+        public bool IsTheCountryValid(string country)
         {
             var validCountries = new Dictionary<int, string>
             {
@@ -43,6 +44,7 @@ namespace SmartyHomework.Services
                 var targetLocation = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomework/Data/";
                 var model = File.ReadAllLines(path).Skip(2).Select(p => new Rates
                 {
+                    
                     Country = p.Split("|")[0],
                     Currency = p.Split("|")[1],
                     Amount = p.Split("|")[2],

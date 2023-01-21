@@ -49,7 +49,7 @@ namespace SmartyHomework.Services
             return url;
         }
 
-        public async void DownloadRatesTxtFile(string uri, string outputPath, int number)
+        public async Task DownloadRatesTxtFile(string uri, string outputPath, int number)
         {
             var policy = BuildRetryPolicy();
             var path = await policy.ExecuteAsync(() => uri
