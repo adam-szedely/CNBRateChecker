@@ -1,0 +1,23 @@
+ public class IntegrationTests : IClassFixture<ExchangeRateConnector>, IClassFixture<ExchangeRateRepository>
+    {
+        private ExchangeRateConnector _exchangeRateConnector;
+        private ExchangeRateRepository _exchangeRateRepository;
+
+        public IntegrationTests(ExchangeRateConnector exchangeRateConnector, ExchangeRateRepository exchangeRateRepository)
+        {
+            _exchangeRateConnector = exchangeRateConnector;
+            _exchangeRateRepository = exchangeRateRepository;
+        }
+
+        [Fact]
+        public async void ShouldDownloadTxtFile_SaveAsJson_RateValuesShouldMatch() 
+        {
+            DateTime begindate = Convert.ToDateTime("01/07/2022");
+            var path = @"/Users/adamszedely/Projects/SmartyHomework/SmartyHomeworkUnitTests/TestData/";
+            var levValue = 12.657;
+            await _exchangeRateConnector.DownloadRatesTxtFile(_exchangeRateConnector.GenerateRatesUrl(begindate), path, begindate.Day);
+            _exchangeRateRepository.FilterOutInvalidRates(path + "CurrencyRate" + begindate.Day + ".txt", begindate.ToString("yyyy/MM/dd"));
+            levValue.ShouldBe(Convert.ToDouble(_exchangeRateRepository.GetRates(path + begindate.ToString("yyyy/MM/dd") + ".json")
+                .Where(r => r.Country == "Bulharsko").Select(r => r.Rate).First()));
+        }
+}
